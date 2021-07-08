@@ -901,15 +901,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1233165746}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1240834c6320f6743b9f5a8c6cd5a659, type: 3}
+  m_Script: {fileID: 11500000, guid: 643606169f678cc4495c9a67844b8cd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 0
+  maxSpeed: 0
   health: 0
+  thirst: 0
+  hunger: 0
   age: 0
-  gender: 0
-  targets: []
-  agent: {fileID: 0}
+  speed: 0
 --- !u!195 &1233165748
 NavMeshAgent:
   m_ObjectHideFlags: 0

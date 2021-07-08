@@ -1,47 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public abstract class Animal : MonoBehaviour
+public abstract class Animal
 {
     // Fields
-    [Header("Base values:")]
-    [SerializeField] protected float maxHealth;      // Maximum health
-    [SerializeField] protected float maxSpeed;       // Maximum speed of travel
+    protected float maxHealth;      // Maximum health
+    protected float maxSpeed;       // Maximum speed of travel
+    
+    protected float health;         // Current health
+    protected float thirst;         // Thirst
+    protected float hunger;         // Hunger
+    protected float age;            // Age
+    protected float speed;          // Current speed
 
-    [Header("State:")]
-    [SerializeField] protected float health;         // Current health
-    [SerializeField] protected float thirst;         // Thirst
-    [SerializeField] protected float hunger;         // Hunger
-    [SerializeField] protected float age;            // Age
-    [SerializeField] protected float speed;          // Current speed
-
-    protected enum stateOfMind
-    {
-        Calm,
-        Fear,
-        Thrist,
-        Hunger
-    }
+    protected IBehaviour behaviour;
 
     // Components
-    protected Animator animator;
+    protected GameObject animalUnit;
+    protected Animation anim;
+    protected NavMeshAgent nvagent;
 
-    // Methods
-    protected void InitializeComponents()
+    public Animal(GameObject _go)
     {
-        animator = GetComponent<Animator>();
+        animalUnit = _go;
+        anim = animalUnit.GetComponent<Animation>();
+        nvagent = animalUnit.GetComponent<NavMeshAgent>();
     }
-    protected IEnumerator Drink()
-    {
-        yield return null;
-    }
-
-    protected IEnumerator Eat()
-    {
-        yield return new WaitForSeconds(3);
-    }
-
-    protected abstract void FindTarget();
-
 }

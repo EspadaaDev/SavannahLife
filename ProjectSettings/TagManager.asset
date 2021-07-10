@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Lion
+  - Herbivore
+  - Predator
+  - Plant
   layers:
   - Default
   - TransparentFX
@@ -12,7 +15,7 @@ TagManager:
   - Animal
   - Water
   - UI
-  - 
+  - Plant
   - 
   - 
   - 

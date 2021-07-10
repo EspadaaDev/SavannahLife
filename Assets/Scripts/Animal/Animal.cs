@@ -1,31 +1,104 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class Animal
+public abstract class Animal : MonoBehaviour
 {
     // Fields
     protected float maxHealth;      // Maximum health
-    protected float maxSpeed;       // Maximum speed of travel
-    
+    protected float maxAge;         // Maximum age
+    protected float declaredMaxSpeed;// Declared maximum speed of travel
+    protected float maxSpeed;       // Real speed of travel from indicators
+    protected int gender;           // Gender
+
     protected float health;         // Current health
     protected float thirst;         // Thirst
     protected float hunger;         // Hunger
     protected float age;            // Age
     protected float speed;          // Current speed
+    protected float anxiety;        // Sense of anxiety
+    protected float rageOfVision;   // Animal viewing distance
 
-    protected IBehaviour behaviour;
+    float timeOfLife = 0;           // Time of life
 
+    protected delegate IEnumerator animalBehavior();
+    protected animalBehavior Do;
     // Components
-    protected GameObject animalUnit;
     protected Animation anim;
     protected NavMeshAgent nvagent;
 
-    public Animal(GameObject _go)
+    // Properties
+    public int GetGender { get { return gender; } }
+    public float GetCurrentHealth { get { return health; } }
+    public float GetAge { get { return age; } }
+    public float GetHunger { get { return hunger; } }
+    public float GetThirst { get { return thirst; } }
+
+    // - - - PUBLIC METHODS - - -
+    public abstract IEnumerator FindingFood();
+    public IEnumerator Wander()
     {
-        animalUnit = _go;
-        anim = animalUnit.GetComponent<Animation>();
-        nvagent = animalUnit.GetComponent<NavMeshAgent>();
+        while (true)
+        {
+            nvagent.SetDestination(transform.position + new Vector3(Random.Range(-5f, 5f), 0, Random.Range(-5f, 5f)));
+            yield return new WaitForSeconds(7);
+        }
+    }
+    public IEnumerator FindingWater()
+    {///
+        while (true)
+        {
+            nvagent.SetDestination(transform.position + new Vector3(Random.Range(-5f, 5f), 0, Random.Range(-5f, 5f)));
+            yield return new WaitForSeconds(1);
+        }
+    }
+
+    public void Kill()
+    {
+
+    }
+
+    public void GetDamage(float damage)
+    {
+        health -= damage;
+    }
+
+    // - - - PROTECTED METHODS - - -
+
+    // Indicators of the animal from the course of life
+    protected void CourseOfLife()
+    {
+        // Time of life
+        timeOfLife += Time.deltaTime;
+
+        // Age calulated
+        age = timeOfLife / 60f;
+        // Thirst calculated
+        thirst -= GameSetups.thirstRate * Time.deltaTime * speed * GameSetups.movementImpact;
+        // Hunger calculated
+        hunger -= GameSetups.hungerRate * Time.deltaTime * speed * GameSetups.movementImpact;
+        // Max speed calculated
+        maxSpeed = declaredMaxSpeed * (health / maxHealth);
+
+        // Diminishing life with hunger and thirst
+        if (thirst <= 0)
+        {
+            thirst = 0;
+            health -= Time.deltaTime;
+        }
+        if (hunger <= 0)
+        {
+            hunger = 0;
+            health -= Time.deltaTime;
+        }
+        // Death from lack of health
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+    protected void Die()
+    {
+
     }
 }

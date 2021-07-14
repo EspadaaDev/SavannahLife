@@ -23,6 +23,7 @@ public abstract class Animal : MonoBehaviour
 
     protected delegate IEnumerator animalBehavior();
     protected animalBehavior Do;
+
     // Components
     protected Animation anim;
     protected NavMeshAgent nvagent;
@@ -35,8 +36,27 @@ public abstract class Animal : MonoBehaviour
     public float GetThirst { get { return thirst; } }
 
     // - - - PUBLIC METHODS - - -
-    public abstract IEnumerator FindingFood();
-    public IEnumerator Wander()
+    public void SetBehavior(string behavior)
+    {
+        StopCoroutine(Do.Invoke());
+        switch (behavior)
+        {
+            case "Feeding Process":
+                Do = new animalBehavior(FeedingProcess);
+                break;
+            case "Drinking Process":
+                Do = new animalBehavior(DrinkingProcess);
+                break;
+            case "Wander":
+                Do = new animalBehavior(Wander);
+                break;
+        }
+        
+        StartCoroutine(Do.Invoke());
+    }
+
+    // - - - PROTECTED METHODS - - -    
+    protected IEnumerator Wander()
     {
         while (true)
         {
@@ -44,27 +64,37 @@ public abstract class Animal : MonoBehaviour
             yield return new WaitForSeconds(7);
         }
     }
-    public IEnumerator FindingWater()
-    {///
+    protected IEnumerator FeedingProcess()
+    {
+        nvagent.SetDestination(transform.position + new Vector3(Random.Range(-5f, 5f), 0, Random.Range(-5f, 5f)));
+        yield return new WaitForSeconds(1);
+    }
+    protected IEnumerator DrinkingProcess()
+    {
         while (true)
         {
             nvagent.SetDestination(transform.position + new Vector3(Random.Range(-5f, 5f), 0, Random.Range(-5f, 5f)));
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(7);
         }
     }
 
-    public void Kill()
+
+    protected abstract void FindingFood();
+    protected void FindingWater()
+    {///
+        
+    }
+
+    protected void Kill()
     {
 
     }
 
-    public void GetDamage(float damage)
+    protected void GetDamage(float damage)
     {
         health -= damage;
     }
-
-    // - - - PROTECTED METHODS - - -
-
+    
     // Indicators of the animal from the course of life
     protected void CourseOfLife()
     {

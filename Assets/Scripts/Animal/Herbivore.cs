@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Herbivore : Animal
-{    
-    public override IEnumerator FindingFood()        
+{
+    protected override void FindingFood()
     {
         throw new System.NotImplementedException();
     }
-
     private void Start()
     {
-        Do  = new animalBehavior(Wander);
         var a = StartCoroutine(Do.Invoke());
         
     }
@@ -21,15 +19,7 @@ public abstract class Herbivore : Animal
         aTime += Time.deltaTime;
         if (aTime > 10f && aTime < 15f)
         {
-            SetBehaviour(new animalBehavior(FindingWater));
             aTime = 100f;
         }
-    }
-
-    private void SetBehaviour(animalBehavior _do)
-    {
-        StopCoroutine(Do.Invoke());
-        Do = _do;
-        StartCoroutine(Do.Invoke());
     }
 }

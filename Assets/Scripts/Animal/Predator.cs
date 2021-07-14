@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Predator : Animal
 {
-    public override IEnumerator FindingFood()
+    protected override void FindingFood()
     {
         throw new System.NotImplementedException();
     }

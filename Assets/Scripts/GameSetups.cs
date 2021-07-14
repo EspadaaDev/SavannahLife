@@ -19,8 +19,7 @@ public static class GameSetups
     
     public static float hungerRate = 2f;        // Hunger rate vs time
     public static float thirstRate = 2f;        // Thirst rate vs time
-    public static float movementImpact = 0.1f;  // Effect of speed on hunger and thirst
-
+    public static float movementImpact = 0.1f;  // Effect of speed on hunger and thirst 
 
     // Lion
     public static float LionHP = 100f;

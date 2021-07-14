@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class Zebra : Herbivore
 {
+
     private void Awake()
     {
         anim = GetComponent<Animation>();
